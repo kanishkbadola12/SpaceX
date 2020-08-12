@@ -5,8 +5,6 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ProgramsComponent } from './programs/programs.component';
 
-
-
 @NgModule({
   declarations: [FiltersComponent, HeaderComponent, FooterComponent, ProgramsComponent],
   imports: [

@@ -11,7 +11,8 @@ export class FiltersComponent implements OnInit {
   constructor(private apiFactoryService: ApiFactoryService) { }
   public launchYears: Array<number> = [];
   public renderingLaunchYears: Array<object> = [];
-  private storeEvenValue: number = 0
+  private storeEvenValue: number = 0;
+  public selectedFilterValue: string = '';
 
   ngOnInit() {
     this.apiFactoryService.getFiltersData().subscribe(
@@ -32,8 +33,16 @@ export class FiltersComponent implements OnInit {
     )
   }
 
-  public getYearValue(value: string): void {
-    console.log(value)
+  public getYearValue(yearValue: string): void {
+    this.selectedFilterValue = yearValue;
   }
+
+  // public successfullLaunch(launchValue: string): void {
+  //   this.selectedFilterValue = launchValue;
+  // }
+
+  // public successfullLand(landValue: string): void {
+  //   this.selectedFilterValue = landValue;
+  // }
 
 }

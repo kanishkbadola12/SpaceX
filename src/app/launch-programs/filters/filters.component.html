@@ -1,25 +1,36 @@
-<div class="filterHeading">Filters</div>
-<div class="launchYear">Launch Year</div>
-<hr>
-<table class="table table-borderless alignCenter">
-    <tr *ngFor="let years of renderingLaunchYears">
-        <td><button *ngIf="years.even != undefined" (click)="getYearValue(years.even)">{{years.even}}</button></td>
-        <td><button *ngIf="years.odd != undefined" (click)="getYearValue(years.odd)">{{years.odd}}</button></td>
-    </tr>
-</table>
-<div class="launchYear">Successfull Launch</div>
-<hr>
-<table class="table table-borderless alignCenter">
-    <tr>
-        <td>True</td>
-        <td>False</td>
-    </tr>
-</table>
-<div class="launchYear">Successfull Landing</div>
-<hr>
-<table class="table table-borderless alignCenter">
-    <tr>
-        <td>True</td>
-        <td>False</td>
-    </tr>
-</table>
+<div class="container">
+    <div class="row">
+        <div class="col-3 filters">
+            <div class="filterHeading">Filters</div>
+            <div class="launchYear">Launch Year</div>
+            <hr>
+            <table class="table table-borderless alignCenter">
+                <tr *ngFor="let years of renderingLaunchYears">
+                    <td><button *ngIf="years.even != undefined" (click)="getYearValue(years.even)">{{years.even}}</button>
+                    </td>
+                    <td><button *ngIf="years.odd != undefined" (click)="getYearValue(years.odd)">{{years.odd}}</button>
+                    </td>
+                </tr>
+            </table>
+            <div class="launchYear">Successfull Launch</div>
+            <hr>
+            <table class="table table-borderless alignCenter">
+                <tr>
+                    <td><button (click)="successfullLaunch('true')">True</button></td>
+                    <td><button (click)="successfullLaunch('false')">False</button></td>
+                </tr>
+            </table>
+            <div class="launchYear">Successfull Landing</div>
+            <hr>
+            <table class="table table-borderless alignCenter">
+                <tr>
+                    <td><button (click)="successfullLand('true')">True</button></td>
+                    <td><button (click)="successfullLand('false')">False</button></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-9">
+            <app-programs [selectedYear]="selectedFilterValue"></app-programs>
+        </div>
+    </div>
+</div>
