@@ -1,0 +1,25 @@
+<div class="filterHeading">Filters</div>
+<div class="launchYear">Launch Year</div>
+<hr>
+<table class="table table-borderless alignCenter">
+    <tr *ngFor="let years of renderingLaunchYears">
+        <td><button *ngIf="years.even != undefined" (click)="getYearValue(years.even)">{{years.even}}</button></td>
+        <td><button *ngIf="years.odd != undefined" (click)="getYearValue(years.odd)">{{years.odd}}</button></td>
+    </tr>
+</table>
+<div class="launchYear">Successfull Launch</div>
+<hr>
+<table class="table table-borderless alignCenter">
+    <tr>
+        <td>True</td>
+        <td>False</td>
+    </tr>
+</table>
+<div class="launchYear">Successfull Landing</div>
+<hr>
+<table class="table table-borderless alignCenter">
+    <tr>
+        <td>True</td>
+        <td>False</td>
+    </tr>
+</table>
