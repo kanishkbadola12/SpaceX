@@ -6,13 +6,13 @@ import { ApiFactoryService } from '../../services/api-factory.service';
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.css']
 })
-export class FiltersComponent implements OnInit {
-
+export class FiltersComponent implements OnInit  {
   constructor(private apiFactoryService: ApiFactoryService) { }
   public launchYears: Array<number> = [];
   public renderingLaunchYears: Array<object> = [];
   private storeEvenValue: number = 0;
   public selectedFilterValue: string = '';
+  public perviousId: number = 0;
 
   ngOnInit() {
     this.apiFactoryService.getFiltersData().subscribe(
@@ -33,16 +33,12 @@ export class FiltersComponent implements OnInit {
     )
   }
 
-  public getYearValue(yearValue: string): void {
+  public getYearValue(yearValue: string, id: number): void {
+    let previousElement = document.getElementById(this.perviousId.toString()) as HTMLInputElement;
+    previousElement.classList.remove('active')
+    let element = document.getElementById(id.toString()) as HTMLInputElement;
+    element.classList.add('active')
+    this.perviousId = id;
     this.selectedFilterValue = yearValue;
   }
-
-  // public successfullLaunch(launchValue: string): void {
-  //   this.selectedFilterValue = launchValue;
-  // }
-
-  // public successfullLand(landValue: string): void {
-  //   this.selectedFilterValue = landValue;
-  // }
-
 }

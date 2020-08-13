@@ -11,8 +11,6 @@ export class ProgramsComponent implements OnInit, OnChanges {
   @Input() selectedYear: string;
   constructor(private apiFactoryService: ApiFactoryService) { }
   public programsObject: Array<SpacePrograms> = new Array();
-  // public programHeading: Array<string> = ['Mission Name:', 'Flight Number:', 'Mission IDs:', 'Launch Year:',
-  // 'Successful Launch:', 'Successful Landing:']
 
   ngOnChanges() {
     console.log(this.selectedYear);
@@ -20,7 +18,7 @@ export class ProgramsComponent implements OnInit, OnChanges {
     if (this.selectedYear !== '') {
       this.apiFactoryService.getYearlyProgramData(this.selectedYear).subscribe(
         (data) => {
-          console.log(data);
+          if (data != '') {
             for (let i = 0; i < data.length; i++) {
               this.programsObject.push({
                 'missionNames': data[i].mission_name,
@@ -32,12 +30,15 @@ export class ProgramsComponent implements OnInit, OnChanges {
                 },
               )
             }
+          }
+          else {
+            alert('No data available')
+          }
         }
       )
     }
-    console.log(this.programsObject)
+    console.log('Rendering data', this.programsObject)
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

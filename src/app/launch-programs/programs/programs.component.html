@@ -1,42 +1,19 @@
-<div class="container">
-    <table class="table table-borderless alignCenter" style="font-size: small;">
-        <tr *ngFor="let x of [1,2,3]; let j=index" class="row">
-            <ng-container *ngIf="j===0">
-                <td class="col-3" *ngFor="let programs of programsObject; let i = index">
-                    <ng-container *ngIf="i<4">
-                        <img class="resize" src='{{programs.imageLinks}}'>
-                    </ng-container>
+    <table class="table table-borderless programsTable">
+        <tbody>
+            <tr class="row">
+                <td class="programs" *ngFor="let programs of programsObject">
+                    <ul class="list-unstyled">
+                        <li><img class="flightImage" src='{{programs.imageLinks}}'></li>
+                        <li><span class="missionName">{{ programs.missionNames }} #{{ programs.flightNumbers }}</span></li>
+                        <li><strong>Mission Ids:</strong> 
+                            <ul class="missionIds">
+                                <li *ngFor="let id of programs.missionIDs">{{ id }}</li>
+                            </ul>
+                        </li>
+                        <li> <strong>Launch Year:</strong> {{ programs.launchYear }}</li>
+                        <li> <strong>Successful Launch :</strong> {{ programs.launchSuccesses }}</li>
+                    </ul>
                 </td>
-                <td class="col-3" *ngFor="let programs of programsObject; let i = index">
-                    <ng-container *ngIf="i<4">
-                    <strong>Mission Name:</strong> {{ programs.missionNames }}
-                    </ng-container>         
-                </td>
-            </ng-container>
-        </tr>
-        <!-- <tr class="row">
-            
-        </tr> -->
-        <!-- <tr class="row">
-            <td class="col-3" *ngFor="let programs of programsObject">
-                <strong>Flight Number:</strong> {{ programs.flightNumbers }}
-            </td>
-        </tr>
-        <tr class="row">
-            <td class="col-3" *ngFor="let programs of programsObject">
-                <strong>Mission IDs:</strong>
-                <li>{{ programs.missionIDs }}</li>
-            </td>
-        </tr>
-        <tr class="row">
-            <td class="col-3" *ngFor="let programs of programsObject">
-                <strong>Launch Year:</strong> {{ programs.launchYear }}
-            </td>
-        </tr>
-        <tr class="row">
-            <td class="col-3" *ngFor="let programs of programsObject">
-                <strong>Launch Success:</strong> {{ programs.launchSuccesses }}
-            </td>
-        </tr> -->
+            </tr>
+        </tbody>
     </table>
-</div>

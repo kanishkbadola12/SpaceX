@@ -1,35 +1,45 @@
-<div class="container">
+<div class="container appContainer">
     <div class="row">
-        <div class="col-3 filters">
+        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 filters">
             <div class="filterHeading">Filters</div>
             <div class="launchYear">Launch Year</div>
             <hr>
             <table class="table table-borderless alignCenter">
-                <tr *ngFor="let years of renderingLaunchYears">
-                    <td><button *ngIf="years.even != undefined" (click)="getYearValue(years.even)">{{years.even}}</button>
-                    </td>
-                    <td><button *ngIf="years.odd != undefined" (click)="getYearValue(years.odd)">{{years.odd}}</button>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr *ngFor="let years of renderingLaunchYears; let i = index">
+                        <td>
+                            <button *ngIf="years.even != undefined" id="{{i}}"
+                                (click)="getYearValue(years.even, i)">{{years.even}}
+                            </button>
+                        </td>
+                        <td>
+                            <button *ngIf="years.odd != undefined" id="{{i+7}}"
+                                (click)="getYearValue(years.odd, i+7)">{{years.odd}}
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
             <div class="launchYear">Successfull Launch</div>
             <hr>
             <table class="table table-borderless alignCenter">
-                <tr>
-                    <td><button (click)="successfullLaunch('true')">True</button></td>
-                    <td><button (click)="successfullLaunch('false')">False</button></td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td><button>True</button></td>
+                        <td><button>False</button></td>
+                    </tr>
+                </tbody>
             </table>
             <div class="launchYear">Successfull Landing</div>
             <hr>
             <table class="table table-borderless alignCenter">
                 <tr>
-                    <td><button (click)="successfullLand('true')">True</button></td>
-                    <td><button (click)="successfullLand('false')">False</button></td>
+                    <td><button>True</button></td>
+                    <td><button>False</button></td>
                 </tr>
             </table>
         </div>
-        <div class="col-9">
+        <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-10">
             <app-programs [selectedYear]="selectedFilterValue"></app-programs>
         </div>
     </div>
