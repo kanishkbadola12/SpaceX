@@ -15,8 +15,9 @@ export class FiltersComponent implements OnInit {
   public launchValue: boolean;
   public landValue: boolean;
   public filterValues: Array<any> = [];
-  public perviousId: number = 0;
+  // public perviousId: number = 0;
   public selectedFilterValues: Array<any> = [];
+  public presentId: any = '';
 
   ngOnInit() {
     this.apiFactoryService.getFiltersData().subscribe(
@@ -65,10 +66,6 @@ export class FiltersComponent implements OnInit {
   }
 
   public highlightSelectedValue(id: any): void {
-    let previousElement = document.getElementById(this.perviousId.toString()) as HTMLInputElement;
-    previousElement.classList.remove('active')
-    let element = document.getElementById(id.toString()) as HTMLInputElement;
-    element.classList.add('active')
-    this.perviousId = id;
+    this.presentId = id;
   }
 }
