@@ -12,12 +12,17 @@ export class ApiFactoryService {
     return this.http.get<any>('https://api.spaceXdata.com/v3/launches?limit=100');
   }
 
-  public getYearlyProgramData(yearValue: string) {
-    let params = new HttpParams()
-                .set('limit', '100')
-                .set('launch_success', 'true')
-                .set('land_success', 'true')
-                .set('launch_year', yearValue);
+  public getYearlyProgramData(selectedFilterValues: Array<any>) {
+    let params = new HttpParams();
+    if (selectedFilterValues[0] !== undefined) {
+      params = params.set('launch_success', selectedFilterValues[0]);
+    }
+    if (selectedFilterValues[1] !== undefined) {
+      params = params.set('land_success', selectedFilterValues[1]);
+    }
+    if (selectedFilterValues[2] !== undefined) {
+      params = params.set('launch_year', selectedFilterValues[2]);
+    }
     console.log(params.toString())
     return this.http.get<any>('https://api.spaceXdata.com/v3/launches', {params})
   }

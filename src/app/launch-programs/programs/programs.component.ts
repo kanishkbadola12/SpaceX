@@ -8,15 +8,14 @@ import { SpacePrograms } from 'src/app/Models/programs';
   styleUrls: ['./programs.component.css']
 })
 export class ProgramsComponent implements OnInit, OnChanges {
-  @Input() selectedYear: string;
+  @Input() selectedFilterValues: Array<any>;
   constructor(private apiFactoryService: ApiFactoryService) { }
   public programsObject: Array<SpacePrograms> = new Array();
 
   ngOnChanges() {
-    console.log(this.selectedYear);
     this.programsObject = [];
-    if (this.selectedYear !== '') {
-      this.apiFactoryService.getYearlyProgramData(this.selectedYear).subscribe(
+    if (this.selectedFilterValues.length !== 0) {
+      this.apiFactoryService.getYearlyProgramData(this.selectedFilterValues).subscribe(
         (data) => {
           if (data != '') {
             for (let i = 0; i < data.length; i++) {
@@ -32,7 +31,7 @@ export class ProgramsComponent implements OnInit, OnChanges {
             }
           }
           else {
-            alert('No data available')
+            alert('No data available');
           }
         }
       )

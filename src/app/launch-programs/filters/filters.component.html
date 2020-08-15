@@ -9,12 +9,12 @@
                     <tr *ngFor="let years of renderingLaunchYears; let i = index">
                         <td>
                             <button *ngIf="years.even != undefined" id="{{i}}"
-                                (click)="getYearValue(years.even, i)">{{years.even}}
+                                (click)="getFilterValue(years.even, i)">{{years.even}}
                             </button>
                         </td>
                         <td>
                             <button *ngIf="years.odd != undefined" id="{{i+7}}"
-                                (click)="getYearValue(years.odd, i+7)">{{years.odd}}
+                                (click)="getFilterValue(years.odd, i+7)">{{years.odd}}
                             </button>
                         </td>
                     </tr>
@@ -25,8 +25,8 @@
             <table class="table table-borderless alignCenter">
                 <tbody>
                     <tr>
-                        <td><button>True</button></td>
-                        <td><button>False</button></td>
+                        <td><button #launchSuccess value="true" id="launchSuccess" (click)="getFilterValue(launchSuccess)">True</button></td>
+                        <td><button #launchFailure value="false" id="launchFailure" (click)="getFilterValue(launchFailure)">False</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -34,13 +34,13 @@
             <hr>
             <table class="table table-borderless alignCenter">
                 <tr>
-                    <td><button>True</button></td>
-                    <td><button>False</button></td>
+                    <td><button #landSuccess value="true" id="landSuccess" (click)="getFilterValue(landSuccess)">True</button></td>
+                    <td><button #landFailure value="false" id="landFailure" (click)="getFilterValue(landFailure)">False</button></td>
                 </tr>
             </table>
         </div>
         <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-xs-10">
-            <app-programs [selectedYear]="selectedFilterValue"></app-programs>
+            <app-programs [selectedFilterValues]="selectedFilterValues"></app-programs>
         </div>
     </div>
 </div>
