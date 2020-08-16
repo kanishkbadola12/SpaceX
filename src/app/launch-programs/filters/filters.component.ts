@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ApiFactoryService } from '../../services/api-factory.service';
 
 @Component({
@@ -15,9 +15,10 @@ export class FiltersComponent implements OnInit {
   public launchValue: boolean;
   public landValue: boolean;
   public filterValues: Array<any> = [];
-  // public perviousId: number = 0;
   public selectedFilterValues: Array<any> = [];
-  public presentId: any = '';
+  public yearId: number;
+  public launchId: string;
+  public landId: string;
 
   ngOnInit() {
     this.apiFactoryService.getFiltersData().subscribe(
@@ -40,32 +41,28 @@ export class FiltersComponent implements OnInit {
   public getFilterValue(yearValue?: any, id?: any): void {
     this.filterValues = [];
     if (typeof yearValue === 'string') {
-      this.highlightSelectedValue(id);
-      this.selectedYearValue = yearValue
+      this.selectedYearValue = yearValue;
+      this.yearId = id;
     }
     else {
       if (yearValue.id === 'launchSuccess') {
-        this.highlightSelectedValue(yearValue.id);
         this.launchValue = true;
+        this.launchId = yearValue.id;
       }
       else if (yearValue.id === 'launchFailure') {
-        this.highlightSelectedValue(yearValue.id);
         this.launchValue = false;
+        this.launchId = yearValue.id;
       }
       else if (yearValue.id === 'landSuccess') {
-        this.highlightSelectedValue(yearValue.id);
         this.landValue = true;
+        this.landId = yearValue.id;
       }
       else if (yearValue.id === 'landFailure') {
-        this.highlightSelectedValue(yearValue.id);
         this.landValue = false;
+        this.landId = yearValue.id;
       }
     }
-     this.filterValues.push(this.launchValue, this.landValue, this.selectedYearValue);
-     this.selectedFilterValues = this.filterValues;
-  }
-
-  public highlightSelectedValue(id: any): void {
-    this.presentId = id;
+    this.filterValues.push(this.launchValue, this.landValue, this.selectedYearValue);
+    this.selectedFilterValues = this.filterValues;
   }
 }

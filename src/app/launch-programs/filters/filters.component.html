@@ -8,12 +8,12 @@
                 <tbody>
                     <tr *ngFor="let years of renderingLaunchYears; let i = index">
                         <td>
-                            <button *ngIf="years.even != undefined" [ngClass]="{'active': presentId === i}"
+                            <button *ngIf="years.even != undefined" [ngClass]="{'active': yearId === i}"
                                 (click)="getFilterValue(years.even, i)">{{years.even}}
                             </button>
                         </td>
                         <td>
-                            <button *ngIf="years.odd != undefined" [ngClass]="{'active': presentId === i+7}"
+                            <button *ngIf="years.odd != undefined" [ngClass]="{'active': yearId === i+7}"
                                 (click)="getFilterValue(years.odd, i+7)">{{years.odd}}
                             </button>
                         </td>
@@ -27,12 +27,12 @@
                     <tr>
                         <td>
                             <button #launchSuccess value="true" id="launchSuccess"
-                                [ngClass]="{'active': presentId === 'launchSuccess'}"
+                                [ngClass]="{'active': launchId === 'launchSuccess'}"
                                 (click)="getFilterValue(launchSuccess)">True</button>
                         </td>
                         <td>
                             <button #launchFailure value="false" id="launchFailure"
-                                [ngClass]="{'active': presentId === 'launchFailure'}"
+                                [ngClass]="{'active': launchId === 'launchFailure'}"
                                 (click)="getFilterValue(launchFailure)">False
                             </button>
                         </td>
@@ -44,10 +44,10 @@
             <table class="table table-borderless alignCenter">
                 <tr>
                     <td><button #landSuccess value="true" id="landSuccess"
-                            [ngClass]="{'active': presentId === 'landSuccess'}"
+                            [ngClass]="{'active': landId === 'landSuccess'}"
                             (click)="getFilterValue(landSuccess)">True</button></td>
                     <td><button #landFailure value="false" id="landFailure"
-                            [ngClass]="{'active': presentId === 'landFailure'}"
+                            [ngClass]="{'active': landId === 'landFailure'}"
                             (click)="getFilterValue(landFailure)">False</button></td>
                 </tr>
             </table>

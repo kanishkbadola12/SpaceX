@@ -3,16 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "heroku-postbuild": "ng build --prod"
-  },
-  "engines": {
-    "node": "12.13.1",
-    "npm": "6.12.1"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -26,10 +21,7 @@
     "@angular/router": "~10.0.9",
     "rxjs": "~6.6.2",
     "tslib": "^1.13.0",
-    "zone.js": "~0.10.3",
-    "@angular/cli": "^10.0.6",
-    "@angular/compiler-cli": "^10.0.9",
-    "typescript": "^3.9.7"
+    "zone.js": "~0.10.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.801.3",
