@@ -8,6 +8,7 @@ import { ApiFactoryService } from '../../services/api-factory.service';
 })
 export class FiltersComponent implements OnInit {
   constructor(private apiFactoryService: ApiFactoryService) { }
+  public programData: Array<object> =[];
   public launchYears: Array<number> = [];
   public renderingLaunchYears: Array<object> = [];
   private storeEvenValue: number = 0;
@@ -34,6 +35,7 @@ export class FiltersComponent implements OnInit {
           }
         }
         this.renderingLaunchYears.push({ even: this.storeEvenValue })
+        this.programData = data;
       }
     )
   }
