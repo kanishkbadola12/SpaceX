@@ -1,0 +1,57 @@
+install => dnf install git
+GUI: github => new => Repo name => create repository
+
+git stage:
+1. working
+2. staged:
+3. commit/history: #id => id of every commit
+mkdir dhruv
+create one file: vim file1.txt => add text
+intialize git => git init .
+ls
+git status
+git add file1 => go to staged area
+git log => check history
+vim file1.txt => edit content
+git status => modified
+git diff => changes of staged area and working directory
+git checkout --file1 => rollback changes
+git status
+git commit -m "add file1"
+git status
+
+create 2 files
+git add . => add all files in working directory
+to see difference bw working and staged => git diff
+to see difference bw staged and commit => git diff -- staged
+git commit
+git log => get #id
+git checkout #id
+git log --oneline
+
+Head => which file we're on
+
+mkdir dhruv2
+git init
+vim file1 => add content
+git add .
+git status
+git commit -m "add file1 with two line"
+git log
+git branch test1
+git log
+git checkout test1
+vim file1 => edit content
+git add .
+git commit -m "added two more line"
+git checkout master
+git merge test1
+
+merge => checkout to the branch where you want to merge and git merge source destination
+origin => repository you want to checkout
+head => working area files, gives file of the present commit (where you have checked out)
+
+
+
+
+

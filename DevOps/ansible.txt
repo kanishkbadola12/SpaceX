@@ -1,0 +1,364 @@
+ansible => automation configuration tool
+build ssh connection bw control node and managed nodes
+host inventory => ip address of managed machines/nodes
+playbook => yum programming language, tasks performed on managed nodes
+core modules => inbuilt modules used in place of commands to perform tasks on managed nodes
+
+Requirements of control node:
+-> ansible
+-> python
+-> red hat
+
+Requirements of managed node:
+-> ssh
+-> python
+
+Lab setup:
+create two instance of ubuntu on AWS + one redhat
+hostnamectl set-hostname controller
+2nd machine => hostnamectl set-hostname node1
+3rd machine => hostnamectl set-hostname node2
+
+build ssh connection on controller:
+vim etc/hosts
+copy ip of node1, node2
+ip node_name
+generate ssh key pair: ssh-keygen
+cd .ssh/
+cat public key
+copy encrypted key
+
+go to both the nodes:
+cd .ssh/
+ls => authorized keys
+vim authorized keys
+paste encrypted key
+
+connect to node1: ssh -i private_key_file -l ubuntu(user) node1
+connect to node2: ssh -i private_key_file -l ubuntu(user) node2
+
+connect to different managed nodes via ssh: ssh -l student servera, user => student
+managed nodes, user => devops
+verify: ping servera
+
+setup workstation (control node):
+install ansible:
+apt update
+apt install ansible -y
+version: ansible --version
+
+Priorties of configuration files: (High -> Low)
+1. ANSIBLE_CONFIG = environment variable: /sachin/eddy/grant/ansible.cfg
+2. $PWD/ansible.cfg => present working directory
+3. ~/.ansible.cfg => home directory
+4. /etc/ansible/ansible.cfg
+
+verify priority:
+***in home directory***
+make file: touch ansible.cfg
+verify: ansible --version
+
+***in pwd***
+make file at pwd: touch ansible.cfg
+verify: ansible --version
+
+***in environment variable***
+defined only till terminal is active: export ANSIBLE_CONFIG=/home/student/eddy/ansible.cfg
+mkdir eddy
+cd eddy/
+touch ansible.cfg
+verify: ansible --version
+***we can define env var permanently in this file: vim .bashrc
+
+
+***create lab setup using inventory and ansible.cfg***
+install python on managed nodes: sudo apt update;  sudo apt install python
+create configuration file:
+mkdir ansible
+cd ansible
+vim ansible.cfg
+[defaults]
+inventory=addgel
+remote_user=devops (which user on what to take connections on)
+
+create inventory file:
+vim addgel
+[prod]
+servera
+serverb
+[dev]
+serverc
+serverd
+[extra]
+sachin.example.com
+dhruv.example.com
+ap2v.example.com
+[rpm:children]
+prod
+dev
+
+verify: ansible all/prod/dev/rpm(groups) --list-hosts
+
+[prod]
+servera
+serverb
+[dev]
+serverc
+serverd
+[extra]
+sachin.example.com
+dhruv.example.com
+ap2v.example.com
+
+verify connection to machines: ansible all(groups) -m ping
+change config private file: vim /etc/ssh/ssh_config
+
+***adhoc commands***
+adhoc commands: can execute single task/command at one time on managed nodes. No need to create a playbook, syntax: ansible hosts/groups options
+playbook: can execute multiple task/command at one time on managed nodes
+
+ad-hoc command to know user of managed nodes: ansible all(hosts/groups) -m(module name) command -a(arguments) 'whoami(simple linux commands)'
+create a user in managed nodes: ansible all -m user -a 'name=sachin  state=present' -b(become sudo)
+delete a user in managed nodes: ansible all -m user -a 'name=sachin state=absent' -b(become sudo)
+arguments desc: ansible-doc user(module name) | less
+arguments all: ansible-doc -l | grep -i 'firewall(search index)'
+create a user in managed nodes with uid & shell: ansible all -m user -a 'name=eddygrant uid(user_id)=2000 comment="eddy grant user" shell="/etc/passwd"' -b
+
+to provide priveleges rather than explicitly mentioning -b everytime:
+vim /etc/ansible/ansible.cfg
+search for [priveleged escalation]
+copy and paste it in our ansible.cfg
+become=True
+become_method=sudo
+become_user=root
+become_ask_pass=false
+
+***Playbook***
+setup cfg file & inventory:
+take ssh connection over managed nodes: ssh -l student workstation
+mkdir ansible
+cd ansible
+touch ansible.cfg
+vim addgel => servera,serverb,serverc,serverd
+setup inventory file with priveleges=> [defaults] [privlege escalation]
+test: anisble all -m ping
+
+useradd playbook: list{name: value, hosts: value, tasks: {-task1:, -task2}}
+vim play1.yml
+
+-(list) name: add users in machine (dictionary)
+	hosts: all
+	tasks:
+		- name: add first user(task1)
+		  user: 
+			name: sachin
+			state: present/absent
+			comment: "Sachin Saini"
+			uid: 2000 (modify existing user)
+			shell: /sbin/nologin
+
+		- name: add second user(task2)
+		  user: 
+			name: eddygrant
+			state: present/absent
+			comment: "Eddy Grants"
+
+check synatax of playbook: ansible playbook play1.yml --syntax-check
+run playbook: ansible playbook play1.yml
+Task [Gathering Facts]: information about managed nodes
+PLAY RECAP: output
+
+To show documentation of anisbleplugin:
+search for plugins: ansible-doc -l | grep -i 'firewall(search index)' => result
+show documentation: ansible-doc -s result
+
+vim devops
+- name: setup web server
+  hosts: all
+  tasks:
+	- name: install apache server
+          apt:
+		name: apache2
+		state: present
+
+	- name: start service
+	  service: 
+	  	name: apache2
+		enabled: yes
+
+	- name: deploy website code
+	  copy: 
+	  	src: index.html
+	  	dest: /var/www/html/index.html
+	  	force: yes
+
+vim index.html
+Hi all from devops
+run: ansible-playbook web.yml -b
+curl servera/serverb/serverc/serverd/node1/node2
+
+***Error Handling***
+to ignore errors in playbook execution, add this in playbook: ignore_errors: yes (globally or can be used for particular tasks)
+
+***Handlers***
+=> to run task conditionally on basis of other tasks completion/failure i.e when changed === true
+uninstall apache: ansible all -m apt -a 'name=apache2 state=absent' -b
+playbook: vim handlers.yml
+- name: using handlers
+  hosts: all
+  task:
+	- name: install package
+	  apt:
+		name: apache2
+		state: present
+	  notify: 
+		- start httpd
+		- backup
+		- add service in firewall
+	changed_when: true
+
+  handlers:
+	- name: start httpd
+	  service:
+		name: apache2
+		state: started
+		enabled: yes
+	
+	- name: backup
+	  command: cp /etc/passwd /root/sachin
+
+	- name: add service in firewall
+	  firewalld:
+		service: http
+		state: enabled
+
+
+vim conditional_playbook.yml
+- name: install package if not installed
+  hosts: all
+  tasks:
+	- name: install package
+	  apt:
+		name: check package
+		command: rpm -q apache2 (check if package is installed or not)
+		register: sample
+		ignore_errors: yes
+
+	- name: install package
+	  apt: 
+		name: apache2
+		state: latest
+	  when: '"not" in sample.stdout'  //skipped=1, when condition fails //associated task will only run if when === true
+
+uninstall apache: ansible all -m apt -a 'name=apache2 state=absent' -b then execute playbook
+
+***Exception Handling***
+vim error_handling.yml
+- name: sections tasks
+  hosts: all
+  tasks:
+	- name: block sections
+	  block:
+		- name:
+		  debug:
+		  	msg: 'hi all from block section task1'
+
+		- name: create a dir
+		  file:
+			path: /tmp/sachin
+			state: directory
+			mode: '777'
+	  
+	  rescue:
+		- name: tasks1
+		  debug:
+			msg: 'hi from rescue section'
+
+	  always:
+		- name: tasks2
+		  debug:
+			msg: 'hi from always section'
+
+run: ansible-playbook error_handling.yml
+
+***Roles***
+=> collection of multiple files and directories. On basis of files and variables, roles are changed
+vim ansible.cfg
+roles_path=sachin
+initialize roles at pwd => ansible-galaxy init eddy_apache2
+view herarchy for role => tree eddy_apache2
+define tasks => vim tasks/main.yml
+
+- name: install nginx
+  apt: 
+	name: "{{pkg}}"
+	state: latest
+
+- name: deploy nginx conf
+  copy: 
+	src: nginx.conf
+	dest: /etc/nginx/sites-available/default
+
+  notify:
+	- start nginx
+
+- name: deploy website
+  templates:
+	src: index.html
+	dest: /var/www/html/index.html
+	force: yes
+
+define handlers => vim handlers/main.yml
+
+- name: start nginx
+  service:
+	name: "{{pkg}}"
+	state: started
+
+make index.html in templates => cd templates
+to know about what values/facts(information about the manage nodes) to use: ansible all -m setup
+vim index.j2
+Hi all from hostname = {{ansible_hostname}}	//facts
+My fqdn = {{ansible_fqdn}}	//facts
+
+make nginx.conf in files => cd files
+touch nginx.conf
+
+copy nginx.conf:
+apt install nginx -y
+cp /nginx/sites-available/default /root/ansible/sachin/eddy_apache2/files/nginx.conf
+edit nginx.conf:
+check port of nodes: ansible all -command -a 'netstat -lntup' -b
+free 80 port: ansible all -command -a 'systemctl stop apache' -b
+
+set variables => vim vars/main.yml
+pkg: nginx
+
+cat hello.yml
+- name: using roles
+  hosts: all
+  become: yes
+  roles:
+	-eddy_apache2
+
+execute role: ansible-playbook hello.yml
+enable port 80 in security group of node1 and node2
+curl node1
+curl node2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

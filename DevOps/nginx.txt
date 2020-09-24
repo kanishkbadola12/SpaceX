@@ -1,0 +1,56 @@
+man any_command: command options description
+search => /
+tar -xfj: extract according to your file extension
+to become sudo user: sudo -i
+
+delete: rm -rfv *gz
+
+r: recursive
+f: force
+v: verbose => what the command has done under the hood
+*gz =  all files having gz as extension
+
+To make web servers: make; make_install
+
+To change port number
+vim webserver2/conf2/httpd.conf
+listen: 8081
+:wq
+
+Change index.html
+vim webserver2/htdocs/index.html
+
+start: ./webserver1/bin/apachectl start
+verify: netstat -lntup | grep httpd, netstat => listen to your port numbers, l => listening, n=>
+public ip address of the machine: curl ifconfig.me, curl => extract source code of webpage
+
+Setup nginx webserver:
+
+install:
+apt -get update => fetch updates from ubuntu server to our repo or server and sync local
+apt -get install nginx => install nginx
+
+setup:
+cd /etc/nginx
+cd sites-available
+vim devops:
+
+server 
+{
+	listen 80;
+	server_name 127.0.0.1 apv2.com
+	location /static/ {
+		root /var/www/html/nginx
+	}
+}
+
+content request => every api
+static content => nginx
+php request => dynamic content => dynamic apis
+
+make dir: mkdir -p /var/www/html/nginx/static
+ln -s etc/nginx/sites-available/ devops /etc/nginx/sites-enabled/
+systemctl restart nginx
+to check error => journalctl -xe
+
+

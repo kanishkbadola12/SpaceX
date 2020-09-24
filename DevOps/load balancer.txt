@@ -1,0 +1,29 @@
+HAProxy: Highly available proxy
+
+Load Balancer => Layer4, Layer7
+Layer4 => Data traffic sent via algo, not reading url
+Layer7 => Data traffic sent via algo, reading url => we can divert traffic by assesing url also
+
+Section:
+Default => all proxy settings
+FE => Which handles request
+BE => Handling of web servers
+listen => on what you want to run
+
+set sections in conf file => etc/haproxy/haproxy.cfg
+1. Set frontend
+2. Set backend of same name as default_backend in FE
+3. check => will not send request on down server
+
+systemctl restart haproxy
+systemctl start haproxy
+verify => netstat -lntp & send request the port number configured in haproxy.cfg
+
+Layer7:
+If we would like to check health of back-end webservers (healthcheck)
+in FE: 
+stats auth sachin:redhat123
+stats uri /hat-status
+
+systemctl restart haproxy.cfg
+

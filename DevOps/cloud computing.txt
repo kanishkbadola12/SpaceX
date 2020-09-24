@@ -1,0 +1,29 @@
+Cloud Computing: We are working on remote data center rather than on premises data center (pay as we use)
+
+Essential characterstics:
+
+Broad Network access => configure different machines, like routers, switches etc
+Rapid Elasticity => we can +- config as per the requirements
+Measured Service => we can meter the service
+
+Service Model: Cloud is having all three options, according to demand we can choose the service
+
+SaasS => We are demanding software as a service, we are not paying for hw etc
+PaaS => We are demanding platform as a service for example, playstore => platform where we can host our android apps. Google is not responsible why my app is not working. They are responsible for platform related issues
+IaaS => purchasing machine from web service provider then we can install application on that. We can configure whole infra
+
+Deployment Models:
+
+Public => publically anybody can access the cloud ex. AWS, GCP, Azure...
+Private => only one group on individual can access the clouds ex. banking companies use private cloud. It is used for single organization only
+Hybrid => combination of public and private cloud
+Community => community can access the clouds ex. banking companies use private cloud. It is used by multiple organization only
+
+
+Cloud Providers: AWS, Microsoft Azure, GCP and openstack
+
+
+AWS: 
+
+Regions => geographical location of availibility zones
+Availibility zone => collection of data centers

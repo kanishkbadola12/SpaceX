@@ -1,0 +1,180 @@
+P2V2C:
+P: physcial infra
+V: virtualization
+C: containization
+
+Hypevisor: provides virtualization of your hw i.e different OS can be installed in same OS ex. virtual box, machine that runs virtual machines/provides virtual HW (on single HW we can run multiple vms) => can be installed on HW & can be installed on VM
+
+monolithic service: all service runnning on single instance
+microservice: all service run independently, communicating with each other
+
+Containization: 
+Container engine: creates containers (light weight virtual machines) over OS (which is hosted on HW), conatiners will be created using images that conatains meta data of application
+
+Docker:
+Version: CE => community edition
+EE => enterprise edition
+IO => customized by Debian
+
+Containers:
+
+install: apt install docker.io -y
+start service: systemctl start docker
+check: systemctl status docker
+commands: docker tab!
+container: docker container
+list all containers: docker ps -a
+image: docker images
+install an image: docker pull centos/ubuntu
+cat /etc/os-release
+create, run and start container: docker run -it centos
+shutdown container: exit
+
+create container: docker create centos
+run container:docker run centos
+start container: docker start names/id
+attach container: docker attach names/id
+shutdown container: exit
+delete container: docker ps -a
+docker rm name'
+
+deattach and run container: docker run -it -d centos
+conventional name and run container: docker run -it --name con1 centos
+
+exit without shuting down container: ctrl+p+q: read escape sequence
+inspect containers: docker inspect process_name
+***to execute process inside docker without shutting down container: docker exec -it process_name /bin/bash
+
+Port mapping: create multiple webservers in a container
+
+image id: docker ps -aq
+sudo sytemctl stop apache2
+Process flow: internet------->VM:80------->[80: httpd]
+VM:80------->[80: httpd]: docker run -d -p 80:80 httpd:latest
+docker exec -it name /bin/bash
+apt update; apt 
+vim htdocs/index.html
+exit
+set hostname & name of container: docker run -h workstation --name=workstation -it centos
+-h = set hostname of container
+--name = name of container
+
+Volumes:to store data of containers
+docker volumes ls
+mkdir storage
+docker volume inspect storage
+
+***tells package name to install particular command: yum provides netstat
+attach dir with container: docker run -it -name con1 -v storage:/data centos
+Run apache:
+/sbin/httpd
+netstat -lntp
+cd /var/www/html/
+vim index.html
+install vim:
+yum install vim -y
+vim index.html
+curl localhost
+ctrl+p+q
+docker inspect con1
+curl ip
+
+********************************CUSTOM IMAGES**************************************************
+
+***create image from container***
+
+docker ps -a
+docker stop
+docker ps -a
+create image from container con1: docker commit con1 dhruv:latest
+docker images
+delete image: docker rmi image_id
+create container: docker run -it dhruv
+
+***create image from container Dockerfile***
+
+docker ps
+create index.html
+create docker file: vim Dockerfile
+	FROM httpd:latest
+	COPY ./index.html /usr/local/index.html
+	EXPOSE port_number
+build image: docker build -t custom_httpd:latest .
+check: docker images
+create container from image: docker run -d custom_httpd
+start container: docker start server1
+docker ps
+check ip: docker inspect
+curl ip
+
+create 5 container
+1: haproxy
+rest 4: apache
+
+flow: VM --------> haproxy --------> 4 apache
+
+SOLUTION:
+download image: docker pull httpd
+		docker pull haproxy
+
+**********creating haproxy container***************
+
+create haproxy.cfg: touch haproxy.cfg
+create docker file: vim Dockerfile
+FROM haproxy:latest
+COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
+pick configuration from => haproxy.org
+define backends
+docker run -d -p 80:80 --name haproxy1 loadbalancer
+curl ifconfig.me => ip
+ip:port
+
+
+
+
+**********creating httpd containers***************
+
+docker run -d httpd
+docker exec -it container_name /bin/bash
+echo "custom_msg"/download editor to edit file >> htdocs/index.html
+docker inspect container_name
+
+
+build image: docker build -t loadbalancer:latest .
+docker images
+
+vim Dockerfile => setup apache
+vim index.html => edit
+docker build -t sachin:latest .
+docker run -d sachin
+docker inspect
+
+docker ps
+docker inspect loadbalancer => get ip
+curl ip
+docker run -d --name loadbalancer -p 80:80 haproxy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

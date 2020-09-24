@@ -1,0 +1,7 @@
+pre-requisite:
+1. Ubuntu server
+2. 1GB Ram
+3. Java8
+
+Install:
+

@@ -1,0 +1,85 @@
+Reactive forms:
+
+1. import ReactiveFormsModule from '@angular/forms' in app.module.ts
+2. import FormGroup, FormControl from '@angular/forms' in component
+3. declare <form [formGroup]="formName(defined in ts)" (ngSubmit)="methodName()">
+4. declare form control with formControlName="formControlName(defined in ts)"
+5. declare nested form with formGroupName="formGroupName(defined in ts)"
+6. value of dropdown can be attained dynamically using [value]="valueFromNgforVariable"
+
+Data transfer using shared service:
+
+1. Create a service
+2. import BehaviourSubject from 'rxjs'
+3. Declare public Behaviour subject to hold data in service: public dataSource = new BehaviourSubject(null)
+4. Create 2 methods: getData(param) and setData()
+5. Get data from component to service in getData by passing data of component to param of getData method
+	this.dataTransferService.getFormData(this.testForm.value);
+6. Assign param of getData to BehaviourSubject and apply next operation to get latest data
+	this.dataSource.next(data) => To feed a new value to the Subject, just call next(theValue), and it will be multicasted to the Observers registered to listen to the Subject.
+7. Return dataSource as Observable in sendData()
+	return this.dataSource.asObservable()
+8. Subscrible to the sendData() method in the component where you want to access data.
+	this.dataTransferService.sendData().subscribe(data => this.displayFormData = data)
+
+Data store using BehaviourSubject:
+
+1. Create a new data service to store/transfer the data
+import { Data } from '../entities/data';
+
+@Injectable()
+export class DataService {
+  private dataSource = new BehaviorSubject<SnapshotSelection>(new Data());
+  data = this.dataSource.asObservable();
+  constructor() { }
+  updatedDataSelection(data: Data){
+    this.dataSource.next(data);
+  }  
+}
+
+2. Use in component to fetch/update the date:
+dataService.data.subscribe(data => {
+  //do what ever needs doing when data changes
+})
+dataService.updateData(newData);
+
+Data transfer using @Input() & @Output():
+
+P ---> C
+1. Import Input from '@angular/core'
+2. Declare @Input() childValue: any in child component
+3. Declare selector <child-component></child-component> in parent's html
+4. Pass data from parent to child selector using property binding
+	<child-component [childValue]="dataFromParent"></child-component>
+
+C ---> P
+1. Import Output, EventEmitter from '@angular/core'
+2. Declare @Output() childValue = new EventEmitter<any>() in child component
+3. Declare a method in child component which will emit the value from Child component to Parent component
+	sendValue(): void {
+		this.childValue.emit(data)	
+	}
+4. Declare child selector in parent's html: <child-component></child-component>
+5. Define event binding in child selector
+	<child-component (childValue)="parentMethodName($event)"
+6. Extract value from event in parent's method
+
+Routing:
+
+1. create seprate module using ng g m app-routing --module app --flat
+2. Import RouterModule, Routes from '@angular/router'
+3. Define const route of type Routes to define routes
+	const route: Routes = [{path: '', component: ComponentName, children: [{path: '', component: 	ComponentName}]}]
+4. Pass route in RouterModule.forRoot in imports array
+	imports: [RouterModule.forRoot(route)]
+5. Pass RouterModule in exports array
+	exports: [RouterModule]
+6. import Router from '@angular/router' in component
+7. Create an instance of Router in constructor
+	constructor(private router: Router){}
+8. Define navigation using router.navigate['']
+	router.navigate(['/forms'])
+
+
+
+

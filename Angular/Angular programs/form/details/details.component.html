@@ -1,0 +1,7 @@
+<form [formGroup]="detailsForm" (ngSubmit)="edit()">
+Name: <input type="text"  formControlName="name"><br>
+Password: <input type="text" formControlName="password"><br>
+Address: <textarea name="address" id="address" cols="20" rows="5" formControlName="address"></textarea><br>
+<button (click)="edit()" type="button">Edit</button>
+</form>
+

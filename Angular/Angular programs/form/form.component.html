@@ -1,0 +1,17 @@
+<form [formGroup]="testForm" (ngSubmit)="show()">
+Name:<input type="text" formControlName="name"><br>
+Password:<input type="text" formControlName="password"><br>
+<form formGroupName="address">
+Select City:
+<select formControlName="city">
+    <option *ngFor="let city of cities" [value]=city>{{city}}</option>
+</select><br>
+Select state:
+<select formControlName="state">
+    <option *ngFor="let state of states" [value]=state>{{state}}</option>
+</select><br>
+</form>
+<button type="submit">Submit</button><br>
+</form><br>
+<!-- <app-display *ngIf="showData"></app-display> -->
+<app-details *ngIf="showData" (newFormValues)="editedValues($event)" [formValues]=parentFormValue></app-details>
